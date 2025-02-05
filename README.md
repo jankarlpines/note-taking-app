@@ -9,6 +9,8 @@ This is a simple note-taking application built using React. It allows users to c
 - Shadcn UI
 - DockView
 - Godot Engine (Canvas)
+- FlexSearch (MeiliSearch?)
+
 
 
 ### Todo
@@ -31,6 +33,7 @@ This is a simple note-taking application built using React. It allows users to c
 - [ ] Add draggable sortable notes
 
 #### Other
+- [ ] Add AI text prediction
 - [ ] Add keyboard shortcuts
 - [ ] Add workspaces
 
