@@ -18,7 +18,7 @@ This is a simple note-taking application built using React. It allows users to c
 - [ ] Collapsable sidebar
 - [ ] Fix BlockNote theme to match Shadcn theme
 - [ ] Press enter add content from note title
-- [ ] Add a search bar (Command bar)
+- [ ] Add a search bar (Command bar, needs storage system)
 - [ ] Add link preview embeds
 
 #### Canvas (Godot Engine)
@@ -28,13 +28,13 @@ This is a simple note-taking application built using React. It allows users to c
 - [ ] Add image uploader (images and videos)
 - [ ] Add icon picker for notes
 - [ ] Add word count
+- [ ] Add draggable sortable notes
 
 #### Other
 - [ ] Add keyboard shortcuts
 - [ ] Add workspaces
 
 #### File Management
-- [ ] Add folder system
-- [ ] Add draggable sortable notes
+- [ ] Implement storage system
 - [ ] Add cloud storage 
-- [ ] Add syncing
+- [ ] Add syncing 
