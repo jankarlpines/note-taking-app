@@ -1,5 +1,5 @@
 import { Note } from '../types'
-import { Plus } from 'lucide-react'
+import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -11,19 +11,32 @@ import {
 } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface SidebarProps {
   notes: Note[]
   selectedNote: Note | null
   onSelectNote: (note: Note) => void
   onNewNote: () => void
+  isCollapsed: boolean
+  onToggle: () => void
 }
 
-function Sidebar({ notes, selectedNote, onSelectNote, onNewNote }: SidebarProps) {
+function Sidebar({ notes, selectedNote, onSelectNote, onNewNote, isCollapsed, onToggle }: SidebarProps) {
   return (
     <SidebarProvider>
-      <ShadcnSidebar className="border-r">
+      <ShadcnSidebar className="border-r h-full">
         <SidebarHeader className="border-b p-4">
+          <div className="flex items-center justify-between mb-2">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggle}
+            >
+              {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+          </div>
           <Button 
             onClick={onNewNote}
             variant="outline"
