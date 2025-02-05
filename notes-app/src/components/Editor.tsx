@@ -4,7 +4,8 @@ import { BlockNoteView } from "@blocknote/shadcn"
 import "@blocknote/shadcn/style.css"
 import { useCreateBlockNote } from "@blocknote/react"
 import { useEffect } from "react"
-import { BlockNoteEditor } from "@blocknote/core"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Input } from "@/components/ui/input"
 
 interface EditorProps {
  note: Note | null
@@ -16,12 +17,7 @@ function Editor({ note, onChange }: EditorProps) {
     initialContent: note?.content ? JSON.parse(note.content) : [{
       type: "paragraph",
       content: []
-    }],
-    domAttributes: {
-      editor: {
-        class: "prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none w-full"
-      }
-    }
+    }]
   })
 
   const handleEditorChange = () => {
@@ -36,8 +32,11 @@ function Editor({ note, onChange }: EditorProps) {
     }
   }
 
- // Early return after hook initialization
- if (!note) return <div className="flex-1 p-4">Select a note</div>
+  if (!note) return (
+    <div className="flex h-full items-center justify-center">
+      <p className="text-muted-foreground">Select a note to view</p>
+    </div>
+  )
 
  // Reset editor content when note changes
  useEffect(() => {
@@ -54,18 +53,24 @@ function Editor({ note, onChange }: EditorProps) {
  }, [note.id, editor, note.content])
 
  return (
-   <div className="flex-1 p-4">
-     <input
-       type="text"
-       value={note.title}
-       onChange={(e) => onChange({ ...note, title: e.target.value })}
-       className="bg-white text-2xl font-bold mb-4 w-full max-w-[800px] mx-auto"
-     />
-     <div className="bg-white w-full h-[calc(100vh-200px)] border rounded overflow-hidden">
-       <div className="h-full overflow-y-auto px-4">
+   <div className="flex h-full flex-col">
+     <div className="border-b px-4 py-2">
+       <Input
+         type="text"
+         value={note.title}
+         onChange={(e) => onChange({ ...note, title: e.target.value })}
+         className="text-lg font-semibold border-none bg-transparent px-0"
+         placeholder="Untitled"
+       />
+       <p className="text-xs text-muted-foreground">
+         Created on {new Date(note.createdAt).toLocaleDateString()}
+       </p>
+     </div>
+     <ScrollArea className="flex-1">
+       <div className="h-full p-4">
          <BlockNoteView editor={editor} onChange={handleEditorChange} />
        </div>
-     </div>
+     </ScrollArea>
    </div>
  )
 }

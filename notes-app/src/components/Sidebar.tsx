@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface SidebarProps {
   notes: Note[]
@@ -21,36 +22,35 @@ interface SidebarProps {
 function Sidebar({ notes, selectedNote, onSelectNote, onNewNote }: SidebarProps) {
   return (
     <SidebarProvider>
-      <ShadcnSidebar>
-        <SidebarHeader className="border-b border-sidebar-border">
+      <ShadcnSidebar className="border-r">
+        <SidebarHeader className="border-b p-4">
           <Button 
             onClick={onNewNote}
-            className="w-full"
+            variant="outline"
             size="sm"
+            className="w-full justify-start"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="mr-2 h-4 w-4" />
             New Note
           </Button>
         </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {notes.map((note) => (
-              <SidebarMenuItem key={note.id}>
-                <SidebarMenuButton
-                  onClick={() => onSelectNote(note)}
-                  isActive={selectedNote?.id === note.id}
-                >
-                  <div className="flex flex-col items-start gap-1">
-                    <span className="font-medium">{note.title}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(note.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
+        <ScrollArea className="h-[calc(100vh-4rem)]">
+          <SidebarContent className="p-2">
+            <SidebarMenu>
+              {notes.map((note) => (
+                <SidebarMenuItem key={note.id} className="px-2">
+                  <SidebarMenuButton
+                    onClick={() => onSelectNote(note)}
+                    isActive={selectedNote?.id === note.id}
+                    className="w-full p-2 rounded-md"
+                  >
+                    <span className="line-clamp-1">{note.title || "Untitled"}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+        </ScrollArea>
       </ShadcnSidebar>
     </SidebarProvider>
   )

@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar'
 import Editor from './components/Editor'
 import notesData from './data/notes.json'
 import { Note } from './types'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
 function App() {
   // Load notes from localStorage on initial render, fallback to notesData
@@ -29,22 +30,29 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen">
-      <Sidebar
-        notes={notes}
-        selectedNote={selectedNote}
-        onSelectNote={setSelectedNote}
-        onNewNote={createNewNote}
-      />
-      <Editor
-        note={selectedNote}
-        onChange={(updatedNote) => {
-          setNotes(notes.map(note => 
-            note.id === updatedNote.id ? updatedNote : note
-          ))
-          setSelectedNote(updatedNote)
-        }}
-      />
+    <div className="h-screen">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={25} minSize={20} maxSize={35}>
+          <Sidebar
+            notes={notes}
+            selectedNote={selectedNote}
+            onSelectNote={setSelectedNote}
+            onNewNote={createNewNote}
+          />
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={75}>
+          <Editor
+            note={selectedNote}
+            onChange={(updatedNote) => {
+              setNotes(notes.map(note => 
+                note.id === updatedNote.id ? updatedNote : note
+              ))
+              setSelectedNote(updatedNote)
+            }}
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   )
 }
