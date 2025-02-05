@@ -1,0 +1,16 @@
+{
+    "notes": [
+      {
+        "id": "1",
+        "title": "First Note",
+        "content": "[{\"type\":\"paragraph\",\"content\":[]}]",
+        "createdAt": "2025-02-04T10:00:00Z"
+      },
+      {
+        "id": "2",
+        "title": "Second Note",
+        "content": "[{\"type\":\"paragraph\",\"content\":[]}]",
+        "createdAt": "2025-02-04T11:00:00Z"
+      }
+    ]
+}
