@@ -18,26 +18,18 @@ const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undef
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "light",
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     // Check localStorage first
     const storedTheme = window.localStorage.getItem('theme') as Theme
-    if (storedTheme) {
-      return storedTheme
-    }
-    // Fall back to system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
-    }
-    return 'light'
+    return storedTheme || defaultTheme
   })
 
   useEffect(() => {
     const root = window.document.documentElement
     root.classList.remove("light", "dark")
     root.classList.add(theme)
-    // Persist theme choice
     window.localStorage.setItem('theme', theme)
   }, [theme])
 
