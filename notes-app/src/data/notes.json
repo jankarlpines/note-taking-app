@@ -4,13 +4,25 @@
         "id": "1",
         "title": "First Note",
         "content": "[{\"type\":\"paragraph\",\"content\":[]}]",
-        "createdAt": "2025-02-04T10:00:00Z"
+        "createdAt": "2025-02-04T10:00:00Z",
+        "parentId": null,
+        "children": []
       },
       {
         "id": "2",
         "title": "Second Note",
         "content": "[{\"type\":\"paragraph\",\"content\":[]}]",
-        "createdAt": "2025-02-04T11:00:00Z"
+        "createdAt": "2025-02-04T11:00:00Z",
+        "parentId": null,
+        "children": ["3"]
+      },
+      {
+        "id": "3",
+        "title": "Nested Note",
+        "content": "[{\"type\":\"paragraph\",\"content\":[]}]",
+        "createdAt": "2025-02-04T12:00:00Z",
+        "parentId": "2",
+        "children": []
       }
     ]
 }

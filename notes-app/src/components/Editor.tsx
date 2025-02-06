@@ -2,8 +2,8 @@ import { Note } from '../types'
 import "@blocknote/core/fonts/inter.css"
 import { BlockNoteView } from "@blocknote/shadcn"
 import "@blocknote/shadcn/style.css"
-import "../styles/blocknote.css"  // Add this line
-import { useCreateBlockNote } from "@blocknote/react"
+import "../styles/blocknote.css"
+import { useCreateBlockNote, SideMenuController } from "@blocknote/react"
 import { useEffect, useState } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils"
 // Add to imports
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { GripVertical } from 'lucide-react'
+import { CustomSideMenu } from './CustomSideMenu'
 
 interface EditorProps {
   note: Note | null
@@ -26,6 +28,11 @@ interface EditorProps {
 function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: EditorProps) {
   const { theme } = useTheme()
   const [title, setTitle] = useState('')
+
+  const autoResize = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  };
 
   const editor = useCreateBlockNote({
     initialContent: [{
@@ -39,18 +46,39 @@ function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: Ed
       content: {
         class: "w-full max-w-[65ch] md:max-w-[75ch] lg:max-w-[85ch] mx-auto"
       }
+    },
+    icons: {
+      dragHandle: (props) => <GripVertical {...props} size={12} />
     }
   })
 
   useEffect(() => {
     if (note) {
       setTitle(note.title)
+      // Trigger auto-resize after setting initial title
+      requestAnimationFrame(() => {
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }
+      });
+      // Force textarea update after title change
+      setTimeout(() => {
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+          const event = new Event('input', { bubbles: true });
+          textarea.dispatchEvent(event);
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }
+      }, 0);
     }
   }, [note?.id, note?.title])
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (!note) return;
-    const newTitle = e.target.value;
+    const newTitle = e.target.value.replace(/\n/g, '');
     setTitle(newTitle)
     onUpdateNote({
       ...note,
@@ -98,7 +126,10 @@ function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: Ed
       <Tabs defaultValue="editor" className="h-full space-y-6">
         <div className="space-between flex items-center">
           <div className="flex items-center gap-2">
-            {isCollapsed && (
+            <div className={cn(
+              "transition-transform duration-300 ease-in-out",
+              !isCollapsed && "-translate-x-full opacity-0"
+            )}>
               <Button
                 variant="ghost"
                 size="icon"
@@ -107,7 +138,7 @@ function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: Ed
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
-            )}
+            </div>
             <TabsList>
               <TabsTrigger value="editor" className="relative">
                 Editor
@@ -122,13 +153,41 @@ function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: Ed
           className="border-none p-0 outline-none"
         >
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Input
-                type="text"
+            <div className="space-y-1 w-full">
+              <textarea
                 value={title}
-                onChange={handleTitleChange}
-                className="text-2xl font-semibold tracking-tight border-none bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                onChange={(e) => {
+                  handleTitleChange(e);
+                  autoResize(e);
+                }}
+                className="w-full text-4xl font-bold tracking-tight border-none bg-transparent px-0 resize-none focus:outline-none overflow-hidden whitespace-pre-wrap break-words"
                 placeholder="Untitled"
+                rows={1}
+                onKeyDown={async (e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.currentTarget.blur();
+                    
+                    const editorElement = document.querySelector('[contenteditable="true"]');
+                    if (editorElement instanceof HTMLElement) {
+                      editorElement.focus();
+                      await editor.insertBlocks(
+                        [{ type: "paragraph", content: [] }],
+                        null,
+                        'end'
+                      );
+                      // Get the newly inserted block
+                      const blocks = editor.topLevelBlocks;
+                      const lastBlock = blocks[blocks.length - 1];
+                      if (lastBlock) {
+                        editor.setSelection({
+                          anchor: { block: lastBlock, offset: 0 },
+                          focus: { block: lastBlock, offset: 0 }
+                        });
+                      }
+                    }
+                  }
+                }}
               />
               <p className="text-sm text-muted-foreground">
                 Created on {new Date(note.createdAt).toLocaleDateString()}
@@ -145,7 +204,12 @@ function Editor({ note, onUpdateNote, isCollapsed = false, onToggleSidebar }: Ed
                 editor={editor} 
                 onChange={handleEditorChange}
                 theme={theme === "dark" ? "dark2" : "light"}
-              />
+                sideMenu={false}
+              >
+                <SideMenuController
+                  sideMenu={(props) => <CustomSideMenu {...props} />}
+                />
+              </BlockNoteView>
             </div>
           </ScrollArea>
         </TabsContent>

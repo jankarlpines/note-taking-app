@@ -30,24 +30,35 @@ function App() {
     setSelectedNote(newNote)
   }
 
+  const deleteNote = (noteId: string) => {
+    const updatedNotes = notes.filter(note => note.id !== noteId)
+    setNotes(updatedNotes)
+    if (selectedNote?.id === noteId) {
+      setSelectedNote(updatedNotes[0] || null)
+    }
+  }
+
+  const handleReorderNotes = (reorderedNotes: Note[]) => {
+    setNotes(reorderedNotes)
+  }
+
   return (
     <ThemeProvider defaultTheme="system">
       <SidebarProvider>
         <div className="grid grid-cols-[auto_1fr] h-[100vh] overflow-hidden">
-          <div className={cn(
-            "border-r",
-            isCollapsed && "hidden"
-          )}>
+          <div className="border-r">
             <Sidebar
               notes={notes}
               selectedNote={selectedNote}
               onSelectNote={setSelectedNote}
               onNewNote={createNewNote}
+              onDeleteNote={deleteNote}
+              onReorderNotes={handleReorderNotes}
               isCollapsed={isCollapsed}
               onToggle={() => setIsCollapsed(!isCollapsed)}
             />
           </div>
-          <div >
+          <div>
             <Editor
               note={selectedNote}
               onUpdateNote={(updatedNote) => {
@@ -55,7 +66,7 @@ function App() {
                   note.id === updatedNote.id ? updatedNote : note
                 );
                 setNotes(updatedNotes);
-                setSelectedNote(updatedNote); // Add this line to keep selected note in sync
+                setSelectedNote(updatedNote);
               }}
               isCollapsed={isCollapsed}
               onToggleSidebar={() => setIsCollapsed(!isCollapsed)}

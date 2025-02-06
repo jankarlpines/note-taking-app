@@ -16,10 +16,10 @@ This is a simple note-taking application built using React. It allows users to c
 ### Todo
 
 - [ ] Dockview implementation
-- [ ] Responsive design (when heading is too long it should wrap to next line)
+- [X] Responsive design (when heading is too long it should wrap to next line)
 - [X] Collapsable sidebar
 - [ ] Fix BlockNote theme to match Shadcn theme
-- [ ] Press enter add content from note title
+- [X] Press enter add content from note title
 - [ ] Add a search bar (Command bar, needs storage system)
 - [ ] Add link preview embeds
 
@@ -30,7 +30,7 @@ This is a simple note-taking application built using React. It allows users to c
 - [ ] Add image uploader (images and videos)
 - [ ] Add icon picker for notes
 - [ ] Add word count
-- [ ] Add draggable sortable notes
+- [X] Add draggable sortable notes
 
 #### Other
 - [ ] Add AI text prediction
