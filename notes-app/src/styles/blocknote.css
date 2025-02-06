@@ -1,0 +1,63 @@
+/* Override BlockNote dark theme colors */
+.bn-container[data-color-scheme="dark"] {
+  --bn-colors-editor-text: hsl(var(--foreground));
+  --bn-colors-editor-background: hsl(var(--background));
+  --bn-colors-menu-text: hsl(var(--foreground));
+  --bn-colors-menu-background: hsl(var(--background));
+  --bn-colors-tooltip-text: hsl(var(--popover-foreground));
+  --bn-colors-tooltip-background: hsl(var(--popover));
+  --bn-colors-hovered-text: hsl(var(--accent-foreground));
+  --bn-colors-hovered-background: hsl(var(--accent));
+  --bn-colors-selected-text: hsl(var(--accent-foreground));
+  --bn-colors-selected-background: hsl(var(--accent));
+  --bn-colors-disabled-text: hsl(var(--muted-foreground));
+  --bn-colors-disabled-background: hsl(var(--muted));
+  --bn-colors-shadow: rgba(0, 0, 0, 0.4);
+  --bn-colors-border: hsl(var(--border));
+  --bn-colors-side-menu: hsl(var(--border));
+}
+.bn-container {
+  --bn-colors-editor-background: hsl(var(--background));
+  --bn-colors-menu-background: hsl(var(--background));
+  --bn-colors-tooltip-background: hsl(var(--popover));
+  --bn-colors-hovered-background: hsl(var(--muted));
+  --bn-colors-selected-background: hsl(var(--muted));
+  --bn-colors-border: hsl(var(--border));
+}
+
+/* Dark mode styles */
+.dark .bn-container {
+  --bn-colors-editor-background: hsl(var(--background));
+  --bn-colors-editor-text: hsl(var(--foreground));
+  --bn-colors-menu-background: hsl(var(--background));
+  --bn-colors-menu-text: hsl(var(--foreground));
+  --bn-colors-tooltip-background: hsl(var(--popover));
+  --bn-colors-tooltip-text: hsl(var(--popover-foreground));
+  --bn-colors-hovered-background: hsl(var(--muted));
+  --bn-colors-hovered-text: hsl(var(--foreground));
+  --bn-colors-selected-background: hsl(var(--muted));
+  --bn-colors-selected-text: hsl(var(--foreground));
+  --bn-colors-disabled-text: hsl(var(--muted-foreground));
+  --bn-colors-disabled-background: hsl(var(--muted));
+  --bn-colors-shadow: rgba(0, 0, 0, 0.4);
+  --bn-colors-border: hsl(var(--border));
+}
+
+/* Direct element styles for better specificity */
+.dark .ProseMirror.bn-editor {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.dark .bn-editor {
+  --bn-colors-editor-background: hsl(var(--background)) !important;
+  --bn-colors-editor-text: hsl(var(--foreground)) !important;
+  --bn-colors-menu-background: hsl(var(--background)) !important;
+  --bn-colors-menu-text: hsl(var(--foreground)) !important;
+  --bn-colors-tooltip-background: hsl(var(--popover)) !important;
+  --bn-colors-tooltip-text: hsl(var(--popover-foreground)) !important;
+  --bn-colors-hovered-background: hsl(var(--muted)) !important;
+  --bn-colors-hovered-text: hsl(var(--foreground)) !important;
+  --bn-colors-selected-background: hsl(var(--muted)) !important;
+  --bn-colors-selected-text: hsl(var(--foreground)) !important;
+}

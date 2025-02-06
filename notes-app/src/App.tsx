@@ -5,6 +5,7 @@ import notesData from './data/notes.json'
 import { Note } from './types'
 import { ThemeProvider } from "./components/theme-provider"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { cn } from "@/lib/utils"
 
 function App() {
   const [notes, setNotes] = useState<Note[]>(() => {
@@ -21,7 +22,7 @@ function App() {
   const createNewNote = () => {
     const newNote: Note = {
       id: String(Date.now()),
-      title: "New Note",
+      title: "",
       content: "",
       createdAt: new Date().toISOString()
     }
@@ -32,41 +33,33 @@ function App() {
   return (
     <ThemeProvider defaultTheme="system">
       <SidebarProvider>
-        <div className="grid h-screen">
-          {/* Mobile view */}
-          <div className="md:hidden">
-            {/* Add mobile layout here if needed */}
+        <div className="grid grid-cols-[auto_1fr] h-[100vh] overflow-hidden">
+          <div className={cn(
+            "border-r",
+            isCollapsed && "hidden"
+          )}>
+            <Sidebar
+              notes={notes}
+              selectedNote={selectedNote}
+              onSelectNote={setSelectedNote}
+              onNewNote={createNewNote}
+              isCollapsed={isCollapsed}
+              onToggle={() => setIsCollapsed(!isCollapsed)}
+            />
           </div>
-          {/* Desktop view */}
-          <div className="hidden md:block">
-            <div className="border-t">
-              <div className="bg-background">
-                <div className="grid lg:grid-cols-5">
-                  <div className={`${isCollapsed ? 'lg:col-span-1' : 'lg:col-span-1'} hidden lg:block`}>
-                    <Sidebar
-                      notes={notes}
-                      selectedNote={selectedNote}
-                      onSelectNote={setSelectedNote}
-                      onNewNote={createNewNote}
-                      isCollapsed={isCollapsed}
-                      onToggle={() => setIsCollapsed(!isCollapsed)}
-                    />
-                  </div>
-                  <div className="col-span-3 lg:col-span-4 lg:border-l">
-                    <div className="h-full px-4 py-6 lg:px-8">
-                      <Editor
-                        note={selectedNote}
-                        onUpdateNote={(updatedNote) => {
-                          setNotes(notes.map(note => 
-                            note.id === updatedNote.id ? updatedNote : note
-                          ))
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div >
+            <Editor
+              note={selectedNote}
+              onUpdateNote={(updatedNote) => {
+                const updatedNotes = notes.map(note => 
+                  note.id === updatedNote.id ? updatedNote : note
+                );
+                setNotes(updatedNotes);
+                setSelectedNote(updatedNote); // Add this line to keep selected note in sync
+              }}
+              isCollapsed={isCollapsed}
+              onToggleSidebar={() => setIsCollapsed(!isCollapsed)}
+            />
           </div>
         </div>
       </SidebarProvider>

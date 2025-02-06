@@ -17,7 +17,7 @@ This is a simple note-taking application built using React. It allows users to c
 
 - [ ] Dockview implementation
 - [ ] Responsive design (when heading is too long it should wrap to next line)
-- [ ] Collapsable sidebar
+- [X] Collapsable sidebar
 - [ ] Fix BlockNote theme to match Shadcn theme
 - [ ] Press enter add content from note title
 - [ ] Add a search bar (Command bar, needs storage system)
