@@ -1,8 +1,8 @@
-# React Note-Taking App in Trae (New Solomon)
+# React Note-Taking App in Trae (Solomon branch)
 ### Description
 This is a simple note-taking application built using React. It allows users to create, edit, and delete notes.
 
-- all notes are currently stored in local storage
+- notes are currently stored in local storage
 
 ##### Tech Stack
 - BlockNote
