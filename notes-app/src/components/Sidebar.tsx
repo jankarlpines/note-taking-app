@@ -21,7 +21,7 @@ function Sidebar({ notes, selectedNote, onSelectNote, onNewNote, isCollapsed, on
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="flex items-center justify-between mb-2 px-4">
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"
